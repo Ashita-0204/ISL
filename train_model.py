@@ -5,13 +5,10 @@ import tensorflow as tf
 from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 
-# Define dataset path
 DATASET_PATH = r"..\isldata\ISL_Dataset"
 CATEGORIES = sorted(os.listdir(DATASET_PATH))  # Ensure this points to a valid directory
 NUM_CLASSES = len(CATEGORIES)
 
-
-# Define image size
 IMG_SIZE = 128
 
 # Load dataset
@@ -32,7 +29,6 @@ for category in CATEGORIES:
 X = np.array(X) / 255.0  # Normalize pixel values
 Y = to_categorical(Y, NUM_CLASSES)  # One-hot encoding
 
-# Split into training and validation sets
 X_train, X_val, Y_train, Y_val = train_test_split(X, Y, test_size=0.2, random_state=42)
 
 print(f"Dataset Loaded: {len(X_train)} training images, {len(X_val)} validation images")
@@ -51,13 +47,13 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dense(NUM_CLASSES, activation='softmax')  # Output layer
 ])
 
-# Compile model
+# Compile 
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
-# Train model
+# Train
 history = model.fit(X_train, Y_train, epochs=20, validation_data=(X_val, Y_val), batch_size=32)
 
-# Save model
+#save
 model.save("isl_model.h5")
 
 print("Model trained and saved successfully!")
