@@ -4,23 +4,20 @@ import tensorflow as tf
 from PIL import Image
 import os
 
-# Load the trained model
+# Loadtrained model
 model = tf.keras.models.load_model("isl_model.h5")
 
-# Define image size
 IMG_SIZE = 128
 
-
-# Dynamically load class labels
-dataset_path = "dataset"  # Change to the actual dataset folder used for training
+dataset_path = "dataset" 
 if os.path.exists(dataset_path):
     CLASS_LABELS = sorted(os.listdir(dataset_path))
 else:
-    CLASS_LABELS = [chr(i) for i in range(ord('A'), ord('Z') + 1)]  # Default A-Z if dataset folder not found
+    CLASS_LABELS = [chr(i) for i in range(ord('A'), ord('Z') + 1)] 
 
 print("Loaded Class Labels:", CLASS_LABELS)
 
-# Initialize the webcam
+# Initialize webcam
 cap = cv2.VideoCapture(0)
 
 while True:
@@ -36,27 +33,26 @@ while True:
     img_array = np.array(img) / 255.0  # Normalize
     img_array = img_array.reshape((1, IMG_SIZE, IMG_SIZE, 3))
 
-    # Make prediction
+ 
     predictions = model.predict(img_array)
     predicted_class = np.argmax(predictions)
 
-    # Get the corresponding letter
     if predicted_class < len(CLASS_LABELS):
         predicted_letter = CLASS_LABELS[predicted_class]
     else:
         predicted_letter = "Unknown"
 
-    # Display the result on the screen
+    # Display result
     cv2.putText(frame, f"Predicted: {predicted_letter}", (50, 50), 
                 cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
-    # Show the webcam feed
+   
     cv2.imshow("ISL Gesture Recognition", frame)
 
-    # Press 'q' to exit
+    
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-# Release resources
+
 cap.release()
 cv2.destroyAllWindows()
