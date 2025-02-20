@@ -2,14 +2,14 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 from train_model import X_val, Y_val  # Load dataset
 
-# Load trained model
+
 model = tf.keras.models.load_model("isl_model.h5")
 
 # Evaluate model
 val_loss, val_acc = model.evaluate(X_val, Y_val)
 print(f"Validation Accuracy: {val_acc * 100:.2f}%")
 
-# Plot Accuracy & Loss Graphs
+# Plot
 history = model.history
 
 plt.figure(figsize=(12, 5))
